@@ -11,9 +11,50 @@ function phpSerializeArray(values){
   return out+"}";
 }
 function storedField(values){return values.length===1?values[0]:phpSerializeArray(values);}
+
+const ROW_IDS=[1,2,3,4,5,6,7,8,9,10,11,12,13,30,35,37,44,49,53,54,55,56,57,58,59,60,61,62,66,67,69,70,76,89,93];
+
+const VERIFIED_DB_ROWS={
+  1:{
+    id:1,title:"Grace for the Guilty",audio_id:119,video_id:121,note_id:120,
+    book:'a:2:{i:0;s:7:"Matthew";i:1;s:6:"Psalms";}',
+    passage_start:'a:2:{i:0;s:3:"9:9";i:1;s:4:"51:1";}',
+    passage_end:'a:2:{i:0;s:4:"9:13";i:1;s:5:"51:12";}'
+  },
+  2:{
+    id:2,title:"The God Who Sees",audio_id:119,video_id:121,note_id:120,
+    book:'a:2:{i:0;s:7:"Matthew";i:1;s:7:"Genesis";}',
+    passage_start:'a:2:{i:0;s:4:"9:20";i:1;s:4:"16:7";}',
+    passage_end:'a:2:{i:0;s:4:"9:22";i:1;s:5:"16:14";}'
+  },
+  3:{
+    id:3,title:"When Faith Feels Small",audio_id:119,video_id:121,note_id:120,
+    book:'a:2:{i:0;s:7:"Matthew";i:1;s:8:"1 Samuel";}',
+    passage_start:'a:2:{i:0;s:4:"12:1";i:1;s:5:"17:32";}',
+    passage_end:'a:2:{i:0;s:4:"12:1";i:1;s:5:"17:37";}'
+  }
+};
+
 const DB=SOURCE.map((s,idx)=>{
+  const id=ROW_IDS[idx] ?? (idx+1);
   const books=s.refs.map(r=>r[0]),starts=s.refs.map(r=>r[1]),ends=s.refs.map(r=>r[2]);
-  return {id:idx+1,title:s.title,date:s.date,preacher:s.preacher,book:storedField(books),start_chapter:storedField(starts),end_chapter:storedField(ends)};
+  const derived={
+    id,
+    title:s.title,
+    date:s.date,
+    preacher:s.preacher,
+    audio_id:119,
+    video_id:121,
+    note_id:120,
+    book:storedField(books),
+    passage_start:storedField(starts),
+    passage_end:storedField(ends),
+    data_source:"Live Apollos content reconstructed into verified sermon-table format"
+  };
+  if(VERIFIED_DB_ROWS[id]){
+    return {...derived,...VERIFIED_DB_ROWS[id],data_source:"Verified database JSON supplied by user"};
+  }
+  return derived;
 });
 function parsePhpArray(value){
   if(typeof value!=="string"||!value.startsWith("a:")) return [value];
@@ -32,7 +73,7 @@ function parsePos(v){
   return {chapter:parseInt(c,10)||0,verse:verse==null?0:(parseInt(verse,10)||0)};
 }
 function matchingRef(record,selectedBook){
-  const books=normalizeField(record.book),starts=normalizeField(record.start_chapter),ends=normalizeField(record.end_chapter);
+  const books=normalizeField(record.book),starts=normalizeField(record.passage_start),ends=normalizeField(record.passage_end);
   const index=books.indexOf(selectedBook);
   if(index<0) return null;
   const start=parsePos(starts[index]),end=parsePos(ends[index]||starts[index]);
@@ -45,7 +86,7 @@ function formatRange(book,ref){
   return sc===ec?`${book} ${sc}:${sv}–${ev}`:`${book} ${start}–${end}`;
 }
 function allRefs(record){
-  const books=normalizeField(record.book),starts=normalizeField(record.start_chapter),ends=normalizeField(record.end_chapter);
+  const books=normalizeField(record.book),starts=normalizeField(record.passage_start),ends=normalizeField(record.passage_end);
   return books.map((b,i)=>formatRange(b,{startRaw:starts[i],endRaw:ends[i]||starts[i]})).join(", ");
 }
 function dateValue(s){return new Date(s).getTime()||0;}
@@ -83,7 +124,18 @@ function render(book){
   groups.forEach((items,chapter)=>{
     html+=`<section class="chapter" id="chapter-${chapter}"><h2 class="chapter-head">${esc(book)} ${chapter}</h2>`;
     items.forEach(([r,ref])=>{
-      const raw={book:r.book,start_chapter:r.start_chapter,end_chapter:r.end_chapter,matched_index:ref.index};
+      const raw={
+        id:r.id,
+        title:r.title,
+        audio_id:r.audio_id,
+        video_id:r.video_id,
+        note_id:r.note_id,
+        book:r.book,
+        passage_start:r.passage_start,
+        passage_end:r.passage_end,
+        matched_index:ref.index,
+        data_source:r.data_source
+      };
       html+=`
       <article class="sermon">
         <div class="ref">${esc(formatRange(book,ref).replace(book+" ",""))}</div>
