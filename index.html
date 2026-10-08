@@ -13,7 +13,7 @@
 <main>
   <div class="kicker">Herald / Apollos prototype</div>
   <h1 id="heading">Sermons by Scripture</h1>
-  <p class="lead">This demo uses current sermon data from the public Apollos demo site, but models each record with the Herald fields <b>book</b>, <b>start_chapter</b>, and <b>end_chapter</b>. Multiple passages are stored as PHP-style serialized arrays. When you choose a book, the page finds the matching array index and sorts only by that book’s chapter and verse.</p>
+  <p class="lead">This prototype now uses the real Herald sermon-table structure you supplied: <b>book</b>, <b>passage_start</b>, and <b>passage_end</b>. The first three sermon rows use your exact database JSON. The remaining sermon titles, dates, preachers, and Scripture references come from the live Apollos site, then are reconstructed into that verified serialized-field format so the chapter-and-verse sorting can be demonstrated consistently.</p>
 
   <div class="filter-shell">
     <div class="filter-label">Filter By</div>
@@ -38,7 +38,7 @@
   <div id="results"></div>
 
   <div class="note">
-    <b>Sorting logic:</b> selected book → matching passage index → start chapter → start verse → end chapter → end verse → sermon date as a final tie-breaker. Click “Show raw Herald-style fields” on any sermon to see the scalar/serialized values the sorter is actually reading.
+    <b>Data note:</b> rows 1–3 are exact database values supplied from Herald. Remaining rows use live Apollos sermon content and the verified serialized PHP field structure shown in your database screenshot. They should be treated as reconstructed demo rows until the full database export is available.
   </div>
 </main>
 <script src="app.js"></script>
