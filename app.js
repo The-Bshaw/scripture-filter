@@ -108,7 +108,7 @@ function esc(s){
 }
 function render(book){
   const matches=DB.filter(r=>matchingRef(r,book)).sort((a,b)=>sortForBook(a,b,book));
-  document.getElementById("heading").textContent=`Sermons from ${book}`;
+  document.getElementById("resultsHeading").textContent=`Sermons from ${book}`;
   const results=document.getElementById("results");
   const chapterJumps=document.getElementById("chapterJumps");
   if(!matches.length){results.innerHTML='<div class="empty">No sermons found.</div>';chapterJumps.innerHTML="";return;}
