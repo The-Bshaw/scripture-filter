@@ -3,44 +3,130 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Apollos Scripture Sort Prototype</title>
+<title>Sermons | Apollos Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Clarity+City:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main>
-  <div class="kicker">Herald / Apollos prototype</div>
-  <h1 id="heading">Sermons by Scripture</h1>
-  <p class="lead">This prototype now uses the real Herald sermon-table structure you supplied: <b>book</b>, <b>passage_start</b>, and <b>passage_end</b>. The first three sermon rows use your exact database JSON. The remaining sermon titles, dates, preachers, and Scripture references come from the live Apollos site, then are reconstructed into that verified serialized-field format so the chapter-and-verse sorting can be demonstrated consistently.</p>
-
-  <div class="filter-shell">
-    <div class="filter-label">Filter By</div>
-    <div class="filter-tabs" role="tablist" aria-label="Sermon filters">
-      <button type="button" class="filter-tab">Series</button>
-      <button type="button" class="filter-tab">Date</button>
-      <button type="button" class="filter-tab">Speaker</button>
-      <button type="button" class="filter-tab">Topic</button>
-      <button type="button" class="filter-tab active">Scripture</button>
+<header class="site-header">
+  <div class="utility-nav">
+    <div class="site-width utility-inner">
+      <a href="#">Get Connected</a>
+      <a href="#">What to Expect</a>
+      <a href="#">Giving</a>
     </div>
+  </div>
 
-    <div class="controls">
-      <div>
-        <label for="bookSelect">Book of the Bible</label>
-        <select id="bookSelect"></select>
+  <div class="site-width main-nav">
+    <a class="brand" href="#">APOLLOS <span>DEMO</span></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Ministries</a>
+      <a href="#" class="active-nav">Resources</a>
+      <a href="#">Events</a>
+    </nav>
+    <button class="search-button" type="button" aria-label="Search">⌕</button>
+  </div>
+</header>
+
+<main>
+  <section class="sermon-intro">
+    <div class="site-width intro-inner">
+      <h1>Sermons</h1>
+      <p>Explore recent sermons and teaching from God’s Word as we seek to know Christ, grow in faith, and live out the gospel together. Whether you missed a Sunday, want to revisit a message, or are looking for biblical encouragement, our sermon archive is here to help you stay connected and grounded in Scripture.</p>
+
+      <div class="platform-row">
+        <div class="platform-label">Stream on these platforms</div>
+        <div class="platform-icons" aria-label="Streaming platforms">
+          <span class="platform-circle">▶</span>
+          <span class="platform-circle">◉</span>
+          <span class="platform-circle">♪</span>
+          <span class="platform-circle">◍</span>
+        </div>
       </div>
     </div>
+  </section>
 
-    <nav id="chapterJumps" aria-label="Chapter links"></nav>
-  </div>
+  <section class="sermon-browser">
+    <div class="site-width">
+      <div class="archive-switch">
+        <button type="button" class="archive-tab active">Current Series</button>
+        <button type="button" class="archive-tab">All Sermons</button>
+      </div>
 
-  <div id="results"></div>
+      <div class="sort-area">
+        <div class="filter-by">Filter By</div>
+        <div class="filter-tabs" role="tablist" aria-label="Sermon filters">
+          <button type="button" class="filter-tab">Series</button>
+          <button type="button" class="filter-tab">Date</button>
+          <button type="button" class="filter-tab">Speaker</button>
+          <button type="button" class="filter-tab">Topic</button>
+          <button type="button" class="filter-tab active">Scripture <span class="chevron">⌄</span></button>
+        </div>
 
-  <div class="note">
-    <b>Data note:</b> rows 1–3 are exact database values supplied from Herald. Remaining rows use live Apollos sermon content and the verified serialized PHP field structure shown in your database screenshot. They should be treated as reconstructed demo rows until the full database export is available.
-  </div>
+        <div class="scripture-tools">
+          <label for="bookSelect">Book of the Bible</label>
+          <select id="bookSelect"></select>
+          <nav id="chapterJumps" aria-label="Chapter links"></nav>
+        </div>
+      </div>
+
+      <div class="results-header">
+        <h2 id="resultsHeading">Sermons from James</h2>
+      </div>
+
+      <div id="results"></div>
+    </div>
+  </section>
 </main>
+
+<footer class="site-footer">
+  <div class="site-width footer-grid">
+    <div class="footer-contact">
+      <a href="mailto:info@yourchurch.org">info@yourchurch.org</a>
+      <a href="tel:+14051234567">(405) 123-4567</a>
+      <p>1234 NW 5th Street<br>Oklahoma City, OK 71234</p>
+      <p class="copyright">Copyright 2026 Apollos Demo.<br>Powered by Church Plant Media</p>
+    </div>
+
+    <div class="footer-column">
+      <h3>About</h3>
+      <a href="#">What to Expect</a>
+      <a href="#">What We Believe</a>
+      <a href="#">Our Mission</a>
+      <a href="#">Ministry Team</a>
+      <a href="#">Get Connected</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>Ministries</h3>
+      <a href="#">Family Ministry</a>
+      <a href="#">Student Ministry</a>
+      <a href="#">Community Groups</a>
+      <a href="#">Bible Studies</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>Resources</h3>
+      <a href="#">Sermons</a>
+      <a href="#">Pastor's Blog</a>
+      <a href="#">Bible Study Podcast</a>
+      <a href="#">Livestream</a>
+      <a href="#">Download Our App</a>
+      <a href="#">Photo Galleries</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>Other Links</h3>
+      <a href="#">Events</a>
+      <a href="#">Giving</a>
+    </div>
+  </div>
+</footer>
+
 <script src="app.js"></script>
 </body>
 </html>
