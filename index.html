@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apollos Scripture Sort Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Clarity+City:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <div class="kicker">Herald / Apollos prototype</div>
+  <h1 id="heading">Sermons by Scripture</h1>
+  <p class="lead">This demo uses current sermon data from the public Apollos demo site, but models each record with the Herald fields <b>book</b>, <b>start_chapter</b>, and <b>end_chapter</b>. Multiple passages are stored as PHP-style serialized arrays. When you choose a book, the page finds the matching array index and sorts only by that book’s chapter and verse.</p>
+
+  <div class="filter-shell">
+    <div class="filter-label">Filter By</div>
+    <div class="filter-tabs" role="tablist" aria-label="Sermon filters">
+      <button type="button" class="filter-tab">Series</button>
+      <button type="button" class="filter-tab">Date</button>
+      <button type="button" class="filter-tab">Speaker</button>
+      <button type="button" class="filter-tab">Topic</button>
+      <button type="button" class="filter-tab active">Scripture</button>
+    </div>
+
+    <div class="controls">
+      <div>
+        <label for="bookSelect">Book of the Bible</label>
+        <select id="bookSelect"></select>
+      </div>
+    </div>
+
+    <nav id="chapterJumps" aria-label="Chapter links"></nav>
+  </div>
+
+  <div id="results"></div>
+
+  <div class="note">
+    <b>Sorting logic:</b> selected book → matching passage index → start chapter → start verse → end chapter → end verse → sermon date as a final tie-breaker. Click “Show raw Herald-style fields” on any sermon to see the scalar/serialized values the sorter is actually reading.
+  </div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
