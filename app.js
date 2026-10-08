@@ -27,6 +27,16 @@ const filterControl=document.getElementById("filterControl");
 const results=document.getElementById("results");
 const heading=document.getElementById("resultsHeading");
 const tabs=[...document.querySelectorAll(".filter-tab")];
+const mobileFilterSelect=document.getElementById("mobileFilterSelect");
+
+const SERIES_IMAGES={
+  "Blessed are Those":"https://cpmfiles1.com/apollos-demo.website/series-matthew-compressed.jpg",
+  "Always Rejoicing: A Study of Philippians":"https://cpmfiles1.com/apollos-demo.website/series-philippians-compressed.jpg",
+  "Faith Alive":"https://cpmfiles1.com/apollos-demo.website/series-faith-alive-compressed.jpg",
+  "First Peter":"https://cpmfiles1.com/apollos-demo.website/series-first-peter-compressed.jpg",
+  "Joshua: Faith in the God of Promise":"https://cpmfiles1.com/apollos-demo.website/series-joshua-compressed.jpg",
+  "Last Words":"https://cpmfiles1.com/apollos-demo.website/series-last-words-compressed.jpg"
+};
 
 function optionSelect(label,values,selected,onChange){
   filterControl.innerHTML=`<label for="activeFilterSelect">${label}</label><select id="activeFilterSelect">${values.map(v=>`<option value="${esc(v)}"${v===selected?" selected":""}>${esc(v)}</option>`).join("")}</select><nav id="chapterJumps" aria-label="Chapter links"></nav>`;
@@ -53,8 +63,32 @@ function renderScripture(book="James"){
 
 function renderSeries(value){
   const values=[...new Set(DB.map(r=>r.series))];
-  const selected=value||values[0];
-  optionSelect("Series",values,selected,renderSeries);
+  heading.textContent="Sermon Series";
+  filterControl.innerHTML="";
+  results.innerHTML=`
+    <div class="series-grid">
+      ${values.map(series=>`
+        <button class="series-card" type="button" data-series="${esc(series)}">
+          <span class="series-image-wrap">
+            <img src="${SERIES_IMAGES[series]||""}" alt="${esc(series)} series artwork" class="series-image">
+          </span>
+          <span class="series-name">${esc(series)}</span>
+        </button>
+      `).join("")}
+    </div>
+  `;
+
+  results.querySelectorAll(".series-card").forEach(card=>{
+    card.addEventListener("click",()=>{
+      const series=card.dataset.series;
+      optionSelect("Series",[...new Set(DB.map(r=>r.series))],series,renderSeriesResults);
+      renderSeriesResults(series);
+    });
+  });
+}
+
+function renderSeriesResults(selected){
+  optionSelect("Series",[...new Set(DB.map(r=>r.series))],selected,renderSeriesResults);
   renderList(DB.filter(r=>r.series===selected),`Sermons from ${selected}`);
 }
 function renderSpeaker(value){
@@ -79,7 +113,15 @@ function renderDate(value){
 }
 
 const renderers={series:renderSeries,date:renderDate,speaker:renderSpeaker,topic:renderTopic,scripture:renderScripture};
-tabs.forEach(tab=>tab.addEventListener("click",()=>{tabs.forEach(t=>t.classList.remove("active"));tab.classList.add("active");renderers[tab.dataset.filter]();}));
+function setActiveFilter(name){
+  tabs.forEach(t=>t.classList.toggle("active",t.dataset.filter===name));
+  if(mobileFilterSelect) mobileFilterSelect.value=name;
+  renderers[name]();
+}
+tabs.forEach(tab=>tab.addEventListener("click",()=>setActiveFilter(tab.dataset.filter)));
+if(mobileFilterSelect){
+  mobileFilterSelect.addEventListener("change",e=>setActiveFilter(e.target.value));
+}
 
 document.addEventListener("click",e=>{const a=e.target.closest(".chapter-jumps a");if(!a)return;const target=document.querySelector(a.getAttribute("href"));if(!target)return;e.preventDefault();window.scrollTo({top:target.getBoundingClientRect().top+window.scrollY-20,behavior:"smooth"});});
 
