@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Clarity+City:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261008-2">
+<link rel="stylesheet" href="style.css?v=20261008-3">
 <style>
 @media (max-width:700px){
   .filter-tabs{display:none!important;}
@@ -72,11 +72,6 @@
 
   <section class="sermon-browser">
     <div class="site-width">
-      <div class="archive-switch">
-        <button type="button" class="archive-tab active">Current Series</button>
-        <button type="button" class="archive-tab">All Sermons</button>
-      </div>
-
       <div class="sort-area">
         <div class="filter-by">Filter By</div>
         <select id="mobileFilterSelect" class="mobile-filter-select" aria-label="Filter sermons">
@@ -91,7 +86,7 @@
           <button type="button" class="filter-tab" data-filter="date">Date</button>
           <button type="button" class="filter-tab" data-filter="speaker">Speaker</button>
           <button type="button" class="filter-tab" data-filter="topic">Topic</button>
-          <button type="button" class="filter-tab active" data-filter="scripture">Scripture <span class="chevron">⌄</span></button>
+          <button type="button" class="filter-tab active" data-filter="scripture">Scripture</button>
         </div>
 
         <div id="filterControl" class="scripture-tools"></div>
