@@ -60,18 +60,14 @@
       <div class="sort-area">
         <div class="filter-by">Filter By</div>
         <div class="filter-tabs" role="tablist" aria-label="Sermon filters">
-          <button type="button" class="filter-tab">Series</button>
-          <button type="button" class="filter-tab">Date</button>
-          <button type="button" class="filter-tab">Speaker</button>
-          <button type="button" class="filter-tab">Topic</button>
-          <button type="button" class="filter-tab active">Scripture <span class="chevron">⌄</span></button>
+          <button type="button" class="filter-tab" data-filter="series">Series</button>
+          <button type="button" class="filter-tab" data-filter="date">Date</button>
+          <button type="button" class="filter-tab" data-filter="speaker">Speaker</button>
+          <button type="button" class="filter-tab" data-filter="topic">Topic</button>
+          <button type="button" class="filter-tab active" data-filter="scripture">Scripture <span class="chevron">⌄</span></button>
         </div>
 
-        <div class="scripture-tools">
-          <label for="bookSelect">Book of the Bible</label>
-          <select id="bookSelect"></select>
-          <nav id="chapterJumps" aria-label="Chapter links"></nav>
-        </div>
+        <div id="filterControl" class="scripture-tools"></div>
       </div>
 
       <div class="results-header">
