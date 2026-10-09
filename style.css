@@ -1179,3 +1179,9 @@ button,select{font:inherit}
 .chapter .sermon:first-of-type:last-of-type .ref{
   border-radius:var(--radius-md) 0 0 var(--radius-md);
 }
+
+
+/* Filter tab height adjustment */
+.filter-tab{
+  height:54px;
+}
