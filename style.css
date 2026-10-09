@@ -1143,3 +1143,39 @@ button,select{font:inherit}
     border-radius:var(--radius-md) 0 0 var(--radius-md);
   }
 }
+
+
+/* Connected sermon list with rounded ends only */
+.chapter .sermon{
+  margin-top:-1px;
+  border-radius:0;
+}
+
+.chapter .sermon:first-of-type{
+  border-radius:var(--radius-md) var(--radius-md) 0 0;
+}
+
+.chapter .sermon:last-of-type{
+  border-radius:0 0 var(--radius-md) var(--radius-md);
+}
+
+.chapter .sermon:first-of-type:last-of-type{
+  border-radius:var(--radius-md);
+}
+
+/* Keep the left reference edge aligned with the outer card shape */
+.chapter .sermon .ref{
+  border-radius:0;
+}
+
+.chapter .sermon:first-of-type .ref{
+  border-radius:var(--radius-md) 0 0 0;
+}
+
+.chapter .sermon:last-of-type .ref{
+  border-radius:0 0 0 var(--radius-md);
+}
+
+.chapter .sermon:first-of-type:last-of-type .ref{
+  border-radius:var(--radius-md) 0 0 var(--radius-md);
+}
