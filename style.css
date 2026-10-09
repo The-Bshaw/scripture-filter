@@ -1045,3 +1045,101 @@ button,select{font:inherit}
     line-height:1.55;
   }
 }
+
+
+/* Rounded UI treatment */
+:root{
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+}
+
+/* Filter tabs */
+.filter-tabs{
+  overflow:hidden;
+  border-radius:var(--radius-md);
+}
+
+.filter-tab{
+  border-radius:0;
+}
+
+.filter-tab:first-child{
+  border-radius:var(--radius-md) 0 0 var(--radius-md);
+}
+
+.filter-tab:last-child{
+  border-radius:0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* Mobile filter selector */
+.mobile-filter-select{
+  border-radius:var(--radius-md) !important;
+}
+
+/* Dropdowns */
+#bookSelect,
+#activeFilterSelect,
+#dateMonthSelect,
+#dateYearSelect{
+  border-radius:var(--radius-md);
+}
+
+/* Series cards/images */
+.series-image-wrap{
+  border-radius:var(--radius-md);
+}
+
+.series-image{
+  border-radius:inherit;
+}
+
+/* Sermon listing cards */
+.sermon{
+  margin-top:12px;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+}
+
+.ref{
+  border-radius:var(--radius-md) 0 0 var(--radius-md);
+}
+
+/* Buttons */
+.action-btn{
+  border-radius:var(--radius-sm);
+}
+
+/* Speaker view */
+.speaker-photo-wrap{
+  border-radius:var(--radius-md);
+}
+
+.speaker-photo{
+  border-radius:inherit;
+}
+
+/* Small circular/utility elements */
+.platform-circle{
+  border-radius:50%;
+}
+
+@media(max-width:700px){
+  .filter-tabs{
+    overflow:visible;
+    border-radius:0;
+  }
+
+  .filter-tab{
+    border-radius:var(--radius-sm) !important;
+    margin:0 0 8px 0;
+  }
+
+  .sermon{
+    border-radius:var(--radius-md);
+  }
+
+  .ref{
+    border-radius:var(--radius-md) 0 0 var(--radius-md);
+  }
+}
