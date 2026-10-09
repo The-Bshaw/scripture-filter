@@ -129,15 +129,15 @@ function renderDate(value){
   filterControl.innerHTML=`
     <div class="date-filter-row">
       <div class="date-filter-field">
-        <label for="dateMonthSelect">Month</label>
-        <select id="dateMonthSelect">
-          ${monthOptions.map(o=>`<option value="${o.value}"${o.value===selectedMonth?" selected":""}>${o.label}</option>`).join("")}
-        </select>
-      </div>
-      <div class="date-filter-field">
         <label for="dateYearSelect">Year</label>
         <select id="dateYearSelect">
           ${years.map(y=>`<option value="${y}"${y===selectedYear?" selected":""}>${y}</option>`).join("")}
+        </select>
+      </div>
+      <div class="date-filter-field">
+        <label for="dateMonthSelect">Month</label>
+        <select id="dateMonthSelect">
+          ${monthOptions.map(o=>`<option value="${o.value}"${o.value===selectedMonth?" selected":""}>${o.label}</option>`).join("")}
         </select>
       </div>
     </div>
