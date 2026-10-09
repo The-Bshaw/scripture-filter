@@ -21,7 +21,12 @@ function allRefs(r){const b=normalizeField(r.book),s=normalizeField(r.passage_st
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function dateValue(v){return new Date(v).getTime()||0;}
 function sortNewest(a,b){return dateValue(b.date)-dateValue(a.date);}
-function card(r,refLabel=""){return `<article class="sermon"><div class="ref">${esc(refLabel||new Date(r.date).toLocaleDateString("en-US",{month:"short",day:"numeric"}))}</div><div class="sermon-main"><div class="title">${esc(r.title)}</div><div class="meta">${esc(r.date)}${r.preacher?` · Preacher: <b>${esc(r.preacher)}</b>`:""}<br>Scripture: ${esc(allRefs(r))}<br>Series: <b>${esc(r.series)}</b></div></div><div class="actions"><a class="action-btn watch" href="#" onclick="return false;">Watch</a><a class="action-btn listen" href="#" onclick="return false;">Listen</a></div></article>`;}
+function card(r,refLabel="",showSeriesImage=false){
+  const left=showSeriesImage
+    ? `<div class="sermon-art-wrap"><img class="sermon-art" src="${SERIES_IMAGES[r.series]||""}" alt="${esc(r.series)} series artwork"></div>`
+    : `<div class="ref">${esc(refLabel||new Date(r.date).toLocaleDateString("en-US",{month:"short",day:"numeric"}))}</div>`;
+  return `<article class="sermon${showSeriesImage?" sermon-with-art":""}">${left}<div class="sermon-main"><div class="title">${esc(r.title)}</div><div class="meta">${esc(r.date)}${r.preacher?` · Preacher: <b>${esc(r.preacher)}</b>`:""}<br>Scripture: ${esc(allRefs(r))}<br>Series: <b>${esc(r.series)}</b></div></div><div class="actions"><a class="action-btn watch" href="#" onclick="return false;">Watch</a><a class="action-btn listen" href="#" onclick="return false;">Listen</a></div></article>`;
+}
 
 const filterControl=document.getElementById("filterControl");
 const results=document.getElementById("results");
@@ -43,9 +48,9 @@ function optionSelect(label,values,selected,onChange){
   document.getElementById("activeFilterSelect").addEventListener("change",e=>onChange(e.target.value));
 }
 
-function renderList(items,title){
+function renderList(items,title,showSeriesImage=false){
   heading.textContent=title;
-  results.innerHTML=items.length?items.sort(sortNewest).map(r=>card(r)).join(""):'<div class="empty">No sermons found.</div>';
+  results.innerHTML=items.length?items.sort(sortNewest).map(r=>card(r,"",showSeriesImage)).join(""):'<div class="empty">No sermons found.</div>';
 }
 
 function renderScripture(book="James"){
@@ -152,7 +157,7 @@ function speakerCard(person){
 function renderSpeaker(value){
   if(value){
     optionSelect("Speaker",[...new Set(DB.map(r=>r.preacher).filter(Boolean))].sort(),value,renderSpeaker);
-    renderList(DB.filter(r=>r.preacher===value),`Sermons by ${value}`);
+    renderList(DB.filter(r=>r.preacher===value),`Sermons by ${value}`,true);
     return;
   }
 
@@ -179,7 +184,7 @@ function renderTopic(value){
   const values=["Discipleship","Faith","Grace","Incarnation","Joy","Mission","Peace","Prayer"];
   const selected=value||values[0];
   optionSelect("Topic",values,selected,renderTopic);
-  renderList(DB.filter(r=>r.topic===selected),`Sermons about ${selected}`);
+  renderList(DB.filter(r=>r.topic===selected),`Sermons about ${selected}`,true);
 }
 function renderDate(value){
   const available=DB.map(r=>{
@@ -238,7 +243,8 @@ function renderDate(value){
       const d=new Date(r.date);
       return d.getFullYear()===selectedYear&&d.getMonth()+1===selectedMonth;
     }),
-    `Sermons from ${label}`
+    `Sermons from ${label}`,
+    true
   );
 }
 
