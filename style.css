@@ -802,3 +802,79 @@ button,select{font:inherit}
     grid-template-columns:1fr !important;
   }
 }
+
+
+/* Two-column Date filter */
+.date-filter-row{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:18px;
+  width:100%;
+  margin-bottom:42px;
+}
+
+.date-filter-field{
+  width:420px;
+  max-width:100%;
+}
+
+.date-filter-field label{
+  display:block;
+  margin-bottom:8px;
+  text-align:center;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-weight:600;
+}
+
+#dateMonthSelect,
+#dateYearSelect{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  height:60px;
+  border:1px solid #111;
+  border-radius:10px;
+  background:
+    linear-gradient(45deg, transparent 50%, #111 50%) calc(100% - 21px) 26px / 6px 6px no-repeat,
+    linear-gradient(135deg, #111 50%, transparent 50%) calc(100% - 15px) 26px / 6px 6px no-repeat,
+    #fff;
+  color:#111;
+  padding:0 52px 0 20px;
+  font-size:16px;
+  font-weight:500;
+  line-height:60px;
+  box-shadow:0 3px 10px rgba(0,0,0,.06);
+  cursor:pointer;
+}
+
+#dateMonthSelect:hover,
+#dateYearSelect:hover{
+  border-color:#000;
+  box-shadow:0 4px 14px rgba(0,0,0,.10);
+}
+
+#dateMonthSelect:focus,
+#dateYearSelect:focus{
+  outline:2px solid #111;
+  outline-offset:2px;
+}
+
+@media(max-width:900px){
+  .date-filter-row{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .date-filter-field{
+    width:420px;
+  }
+}
+
+@media(max-width:700px){
+  .date-filter-field{
+    width:100%;
+  }
+}
