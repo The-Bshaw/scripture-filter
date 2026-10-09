@@ -104,12 +104,64 @@ function renderTopic(value){
   renderList(DB.filter(r=>r.topic===selected),`Sermons about ${selected}`);
 }
 function renderDate(value){
-  const months=[...new Set(DB.map(r=>{const d=new Date(r.date);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;}))].sort().reverse();
-  const selected=value||months[0];
-  optionSelect("Date",months,selected,renderDate);
-  const [year,month]=selected.split("-").map(Number);
-  const label=new Date(year,month-1,1).toLocaleDateString("en-US",{month:"long",year:"numeric"});
-  renderList(DB.filter(r=>{const d=new Date(r.date);return d.getFullYear()===year&&d.getMonth()+1===month;}),`Sermons from ${label}`);
+  const available=DB.map(r=>{
+    const d=new Date(r.date);
+    return {year:d.getFullYear(),month:d.getMonth()+1};
+  });
+
+  const years=[...new Set(available.map(x=>x.year))].sort((a,b)=>b-a);
+  const initial=value&&typeof value==="object"?value:null;
+  const selectedYear=initial?.year||years[0];
+
+  const monthsForYear=[...new Set(
+    available.filter(x=>x.year===selectedYear).map(x=>x.month)
+  )].sort((a,b)=>a-b);
+
+  const selectedMonth=initial?.month&&monthsForYear.includes(initial.month)
+    ? initial.month
+    : monthsForYear[monthsForYear.length-1];
+
+  const monthOptions=monthsForYear.map(m=>({
+    value:m,
+    label:new Date(2000,m-1,1).toLocaleDateString("en-US",{month:"long"})
+  }));
+
+  filterControl.innerHTML=`
+    <div class="date-filter-row">
+      <div class="date-filter-field">
+        <label for="dateMonthSelect">Month</label>
+        <select id="dateMonthSelect">
+          ${monthOptions.map(o=>`<option value="${o.value}"${o.value===selectedMonth?" selected":""}>${o.label}</option>`).join("")}
+        </select>
+      </div>
+      <div class="date-filter-field">
+        <label for="dateYearSelect">Year</label>
+        <select id="dateYearSelect">
+          ${years.map(y=>`<option value="${y}"${y===selectedYear?" selected":""}>${y}</option>`).join("")}
+        </select>
+      </div>
+    </div>
+  `;
+
+  const monthSelect=document.getElementById("dateMonthSelect");
+  const yearSelect=document.getElementById("dateYearSelect");
+
+  monthSelect.addEventListener("change",()=>{
+    renderDate({year:+yearSelect.value,month:+monthSelect.value});
+  });
+
+  yearSelect.addEventListener("change",()=>{
+    renderDate({year:+yearSelect.value});
+  });
+
+  const label=new Date(selectedYear,selectedMonth-1,1).toLocaleDateString("en-US",{month:"long",year:"numeric"});
+  renderList(
+    DB.filter(r=>{
+      const d=new Date(r.date);
+      return d.getFullYear()===selectedYear&&d.getMonth()+1===selectedMonth;
+    }),
+    `Sermons from ${label}`
+  );
 }
 
 const renderers={series:renderSeries,date:renderDate,speaker:renderSpeaker,topic:renderTopic,scripture:renderScripture};
