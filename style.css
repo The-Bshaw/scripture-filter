@@ -919,3 +919,13 @@ button,select{font:inherit}
     width:auto;
   }
 }
+
+
+/* Restore tighter spacing on Scripture view only */
+.scripture-tools:has(.chapter-jumps){
+  margin-bottom:0 !important;
+}
+
+.scripture-tools:has(.chapter-jumps) + .results-header{
+  margin-top:24px !important;
+}
