@@ -91,11 +91,89 @@ function renderSeriesResults(selected){
   optionSelect("Series",[...new Set(DB.map(r=>r.series))],selected,renderSeriesResults);
   renderList(DB.filter(r=>r.series===selected),`Sermons from ${selected}`);
 }
+const SPEAKERS={
+  primary:[
+    {
+      name:"Taylor Landry",
+      role:"Associate Pastor",
+      image:"https://cpmfiles1.com/apollos-demo.website/taylor-landry-compressed.jpg?83712=",
+      bio:"Taylor Landry serves as the Associate Pastor, helping provide pastoral care, ministry leadership, and support for the church family. He is passionate about teaching God’s Word and helping people grow in their relationship with Christ."
+    },
+    {
+      name:"Jonathan Miller",
+      role:"Senior Pastor",
+      image:"https://cpmfiles1.com/apollos-demo.website/jonathan-miller-compressed.jpg?19390=",
+      bio:"Jonathan Miller serves as the Senior Pastor, providing biblical teaching, pastoral care, and spiritual leadership for the church family. He is passionate about helping people know Christ, grow in faith, and live out the gospel."
+    }
+  ],
+  guest:[
+    {
+      name:"Ben Harris",
+      role:"Youth Pastor",
+      image:"https://cpmfiles1.com/apollos-demo.website/ben-harris-compressed.jpg",
+      bio:"Ben Harris serves as the Youth Pastor, helping students grow in their faith, build meaningful friendships, and learn what it means to follow Jesus in everyday life. He is passionate about investing in the next generation."
+    },
+    {
+      name:"Ricky Hughes",
+      role:"Childrens Pastor",
+      image:"https://cpmfiles1.com/apollos-demo.website/ricky-hughes-compressed.jpg",
+      bio:"Ricky Hughes serves as the Children’s Minister, helping children learn about Jesus in a safe, fun, and welcoming environment. He is passionate about partnering with parents and families."
+    },
+    {
+      name:"Sam Johnson",
+      role:"Apologetics Pastor",
+      image:"https://cpmfiles1.com/apollos-demo.website/sam-johnson-compressed.jpg",
+      bio:"Sam Johnson serves as the Apologetics Pastor, helping people understand, articulate, and defend the Christian faith with clarity and grace. He is passionate about equipping believers to engage thoughtful questions."
+    },
+    {
+      name:"Thomas McGesterson",
+      role:"Discipleship Pastor",
+      image:"https://cpmfiles1.com/apollos-demo.website/thomas-mcgesterson-compressed.jpg",
+      bio:"Thomas McGesterson serves as the Discipleship Pastor, helping people grow deeper in their relationship with Christ and become more grounded in God’s Word. He is passionate about helping believers mature in faith."
+    }
+  ]
+};
+
+function speakerCard(person){
+  return `
+    <article class="speaker-card">
+      <div class="speaker-photo-wrap">
+        <img class="speaker-photo" src="${person.image}" alt="${esc(person.name)}">
+      </div>
+      <div class="speaker-copy">
+        <h3>${esc(person.name)} <span>| ${esc(person.role)}</span></h3>
+        <p>${esc(person.bio)}</p>
+        <button class="speaker-sermons-link" type="button" data-speaker="${esc(person.name)}">View ${esc(person.name)}’s Sermons</button>
+      </div>
+    </article>
+  `;
+}
+
 function renderSpeaker(value){
-  const values=[...new Set(DB.map(r=>r.preacher).filter(Boolean))].sort();
-  const selected=value||values[0];
-  optionSelect("Speaker",values,selected,renderSpeaker);
-  renderList(DB.filter(r=>r.preacher===selected),`Sermons by ${selected}`);
+  if(value){
+    optionSelect("Speaker",[...new Set(DB.map(r=>r.preacher).filter(Boolean))].sort(),value,renderSpeaker);
+    renderList(DB.filter(r=>r.preacher===value),`Sermons by ${value}`);
+    return;
+  }
+
+  filterControl.innerHTML="";
+  heading.textContent="";
+  results.innerHTML=`
+    <div class="speaker-directory">
+      <section class="speaker-group">
+        <h2>Primary Preachers</h2>
+        <div class="speaker-list">${SPEAKERS.primary.map(speakerCard).join("")}</div>
+      </section>
+      <section class="speaker-group guest-preachers">
+        <h2>Guest Preachers</h2>
+        <div class="speaker-list">${SPEAKERS.guest.map(speakerCard).join("")}</div>
+      </section>
+    </div>
+  `;
+
+  results.querySelectorAll(".speaker-sermons-link").forEach(button=>{
+    button.addEventListener("click",()=>renderSpeaker(button.dataset.speaker));
+  });
 }
 function renderTopic(value){
   const values=["Discipleship","Faith","Grace","Incarnation","Joy","Mission","Peace","Prayer"];
