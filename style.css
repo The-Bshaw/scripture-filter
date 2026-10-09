@@ -1267,3 +1267,22 @@ button,select{font:inherit}
     box-shadow:0 5px 14px rgba(0,0,0,.08);
   }
 }
+
+
+/* Keep Date / Speaker / Topic sermon rows connected */
+#results > .sermon{
+  margin-top:-1px;
+  border-radius:0;
+}
+
+#results > .sermon:first-child{
+  border-radius:var(--radius-md) var(--radius-md) 0 0;
+}
+
+#results > .sermon:last-child{
+  border-radius:0 0 var(--radius-md) var(--radius-md);
+}
+
+#results > .sermon:first-child:last-child{
+  border-radius:var(--radius-md);
+}
